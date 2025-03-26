@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FrEzra Dashboard</title>
+  <link rel="stylesheet" href="styles/dashboard.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to FrEzra</h1>
+    <button onclick="openSettings()">Settings</button>
+  </header>
+
+  <div id="user-status">
+    <h2>Your Status: <span id="user-status-text"></span></h2>
+    <button onclick="changeStatus()">Change Status</button>
+  </div>
+
+  <div id="posts">
+    <h3>Your Posts</h3>
+    <div id="post-list"></div>
+    <textarea id="post-content" placeholder="Write a new post..."></textarea>
+    <button onclick="createPost()">Post</button>
+  </div>
+
+  <div id="groups">
+    <h3>Your Groups</h3>
+    <div id="group-list"></div>
+    <button onclick="createGroup()">Create Group</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="scripts/dashboard.js"></script>
+</body>
+</html>
