@@ -1,32 +1,43 @@
+body {
+    font-family: Arial, sans-serif;
+    background: black;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
 .signup-container {
-    width: 300px;
+    max-width: 400px;
     margin: auto;
+    background: #222;
     padding: 20px;
     border-radius: 10px;
-    background: #f8f9fa;
-    text-align: center;
 }
 
-.signup-container h2 {
-    margin-bottom: 20px;
-}
-
-.signup-container input, .signup-container select, .signup-container textarea {
+input, select {
     width: 100%;
-    padding: 8px;
-    margin: 5px 0;
+    padding: 10px;
+    margin: 10px 0;
+    border: none;
     border-radius: 5px;
-    border: 1px solid #ccc;
 }
 
-.phone-input {
+button {
+    width: 100%;
+    padding: 10px;
+    background: green;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.country-select {
     display: flex;
     align-items: center;
 }
 
-#country-code {
-    background: #ddd;
-    padding: 8px;
-    margin-right: 5px;
-    border-radius: 5px;
+#flag {
+    width: 30px;
+    height: 20px;
+    margin-right: 10px;
 }
