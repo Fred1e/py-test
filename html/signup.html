@@ -3,49 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup - FrEzra</title>
-    <link rel="stylesheet" href="../styles/signup.css">
+    <title>FrEzra - Sign Up</title>
+    <link rel="stylesheet" href="../css/signup.css">
+    <script src="../js/signup.js" defer></script>
 </head>
 <body>
+
     <div class="signup-container">
-        <h2>Create an Account</h2>
-        <form id="signup-form">
-            <input type="text" id="fullName" placeholder="Full Name" required>
-            <input type="text" id="username" placeholder="Username" required>
+        <h2>Sign Up to FrEzra</h2>
 
-            <!-- Country Selection with Flag -->
-            <label for="country">Select Country:</label>
-            <select id="country" required onchange="updateCountryCode()">
-                <!-- Options will be loaded from JSON -->
-            </select>
+        <label for="country">Select Country</label>
+        <div class="country-select">
+            <img id="flag" src="" alt="Flag">
+            <select id="country" onchange="updateCountryCode()"></select>
+        </div>
 
-            <!-- Phone Number with Auto Country Code -->
-            <label for="phone">Phone Number:</label>
-            <div class="phone-input">
-                <span id="country-code">+255</span>
-                <input type="tel" id="phone" placeholder="Enter Phone Number" required>
-            </div>
+        <label for="phone">Phone Number</label>
+        <div class="phone-input">
+            <span id="country-code">+255</span>
+            <input type="tel" id="phone" placeholder="Enter phone number">
+        </div>
 
-            <input type="email" id="email" placeholder="Email Address" required>
-            <input type="password" id="password" placeholder="Password" required>
-            
-            <input type="date" id="dob" required>
-            <select id="gender">
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-            </select>
+        <label for="email">Email (Optional)</label>
+        <input type="email" id="email" placeholder="Enter email">
 
-            <textarea id="bio" placeholder="Tell us about yourself (Optional)"></textarea>
+        <button onclick="sendOTP()">Next</button>
 
-            <label>Choose OTP Method:</label>
-            <input type="radio" name="otp-method" value="sms" checked> SMS
-            <input type="radio" name="otp-method" value="email"> Email
-
-            <button type="submit">Next</button>
-        </form>
+        <p>Already have an account? <a href="login.html">Login</a></p>
     </div>
 
-    <script src="../scripts/signup.js"></script>
 </body>
 </html>
