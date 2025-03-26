@@ -1,97 +1,38 @@
 const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cors = require('cors');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 
-// Initialize express app
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+const port = 3000;
 
-// Middleware
-app.use(express.json());
-app.use(cors());
+// MongoDB Atlas connection string
+const mongoURI = 'mongodb+srv://atlas-sample-dataset-load-67e3d612d5c5373b1f9f5d23:<arusha2025#>@frezra.rm2iwpq.mongodb.net/?retryWrites=true&w=majority&appName=FrEzra';
 
-// MongoDB Connection
-mongoose.connect('mongodb://localhost/frezra', {
+// Connect to MongoDB
+mongoose.connect(mongoURI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-});
+})
+  .then(() => console.log('MongoDB Atlas connected successfully'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-// Define Models
-const User = mongoose.model('User', new mongoose.Schema({
-  username: String,
-  password: String,
-  status: String,
-}));
+app.use(cors());
+app.use(bodyParser.json());
 
-const Post = mongoose.model('Post', new mongoose.Schema({
-  author: String,
-  content: String,
-  timestamp: Date,
-}));
+// Import Routes
+const authRoutes = require('./routes/authRoutes');
+const userRoutes = require('./routes/userRoutes');
+const postRoutes = require('./routes/postRoutes');
+const groupRoutes = require('./routes/groupRoutes');
 
-const Group = mongoose.model('Group', new mongoose.Schema({
-  name: String,
-  description: String,
-  members: [String],
-}));
-
-// Routes
-app.post('/signup', async (req, res) => {
-  const { username, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ username, password: hashedPassword });
-  await newUser.save();
-  res.json({ message: 'User created successfully!' });
-});
-
-app.post('/login', async (req, res) => {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username });
-
-  if (!user) return res.status(400).json({ message: 'User not found' });
-
-  const validPassword = await bcrypt.compare(password, user.password);
-  if (!validPassword) return res.status(400).json({ message: 'Invalid password' });
-
-  const token = jwt.sign({ username: user.username }, 'secret_key');
-  res.json({ token });
-});
-
-app.post('/update-status', async (req, res) => {
-  const { username, status } = req.body;
-  await User.findOneAndUpdate({ username }, { status });
-  res.json({ message: 'Status updated successfully' });
-});
-
-app.post('/create-post', async (req, res) => {
-  const { author, content } = req.body;
-  const newPost = new Post({ author, content, timestamp: new Date() });
-  await newPost.save();
-  res.json({ message: 'Post created successfully' });
-});
-
-app.post('/create-group', async (req, res) => {
-  const { name, description, members } = req.body;
-  const newGroup = new Group({ name, description, members });
-  await newGroup.save();
-  res.json({ message: 'Group created successfully' });
-});
-
-// Socket.io for real-time messaging
-io.on('connection', (socket) => {
-  console.log('A user connected');
-
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
+// Routes Middleware
+app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
+app.use('/api/posts', postRoutes);
+app.use('/api/groups', groupRoutes);
 
 // Start Server
-server.listen(3000, () => {
-  console.log('Server running on http://localhost:3000');
+app.listen(port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
 });
